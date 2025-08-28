@@ -1,0 +1,21 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import LogicalReasoningQuiz from '~/components/LogicalReasoningQuiz.jsx';
+
+const metadata = {
+  title: 'Cuestionario de Razonamiento Lógico',
+  description: 'Responde a nuestro cuestionario de razonamiento lógico con tiempo limitado.',
+  canonical: 'https://tudominio.com/quiz'
+};
+---
+
+<Layout {metadata}>
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-4">Cuestionario de Razonamiento Lógico</h1>
+    <p class="text-center text-lg mb-8 text-gray-600">
+      Responde las siguientes preguntas de razonamiento lógico. Tienes 5 minutos para completar el cuestionario.
+    </p>
+    
+    <LogicalReasoningQuiz client:load />
+  </div>
+</Layout>

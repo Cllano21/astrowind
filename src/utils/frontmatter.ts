@@ -2,7 +2,9 @@ import getReadingTime from 'reading-time';
 import { toString } from 'mdast-util-to-string';
 import { visit } from 'unist-util-visit';
 import type { RehypePlugin, RemarkPlugin } from '@astrojs/markdown-remark';
-
+import slugify from 'limax';
+import { SITE, APP_BLOG } from 'astrowind:config';
+import { trim } from '~/utils/utils';
 export const readingTimeRemarkPlugin: RemarkPlugin = () => {
   return function (tree, file) {
     const textOnPage = toString(tree);
@@ -48,3 +50,4 @@ export const lazyImagesRehypePlugin: RehypePlugin = () => {
     });
   };
 };
+export const trimSlash = (s: string) => trim(trim(s, '/'));

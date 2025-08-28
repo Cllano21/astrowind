@@ -5,9 +5,12 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
-    }
+      "~/*": ["src/*"],
+      "astrowind:config": ["./src/config"],
+      "virtual:astro-icon": ["node_modules/astro-icon/components/Icon.astro"]
+    },
+    "types": ["astro/client", "vite/client"]
   },
-  "include": [".astro/types.d.ts", "**/*"],
+  "include": [".astro/types.d.ts", "**/*", "src/astrowind-config.d.ts"],
   "exclude": ["dist/"]
 }

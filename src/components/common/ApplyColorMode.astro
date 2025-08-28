@@ -1,10 +1,15 @@
 ---
 import { UI } from 'astrowind:config';
 
+// Proporcionar valores por defecto si UI no está definido
+const safeUI = UI || {
+  theme: 'system'
+};
+
 // TODO: This code is temporary
 ---
 
-<script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>
+<script is:inline define:vars={{ defaultTheme: safeUI.theme || 'system' }}>
   function applyTheme(theme) {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');

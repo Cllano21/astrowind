@@ -38,6 +38,181 @@ const { language, textDirection } = I18N;
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />
+    
+    <!-- Estilos adicionales para el cuestionario -->
+    <style>
+      .quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      .quiz-header {
+        margin-bottom: 20px;
+      }
+      
+      .quiz-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      
+      .timer {
+        color: #e74c3c;
+      }
+      
+      .progress-bar {
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      
+      .progress {
+        height: 100%;
+        background-color: #3498db;
+        transition: width 0.3s ease;
+      }
+      
+      .question-container {
+        margin-bottom: 20px;
+      }
+      
+      .question-container h3 {
+        margin-bottom: 15px;
+        color: #2c3e50;
+      }
+      
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .option {
+        padding: 12px 15px;
+        background-color: white;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      
+      .option:hover {
+        background-color: #f0f0f0;
+        border-color: #bbb;
+      }
+      
+      .option.selected {
+        background-color: #3498db;
+        color: white;
+        border-color: #2980b9;
+      }
+      
+      .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .nav-button {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      
+      .nav-button:disabled {
+        background-color: #bdc3c7;
+        cursor: not-allowed;
+      }
+      
+      .nav-button:hover:not(:disabled) {
+        background-color: #2980b9;
+      }
+      
+      .next-button {
+        background-color: #2ecc71;
+      }
+      
+      .next-button:hover {
+        background-color: #27ae60;
+      }
+      
+      /* Estilos para los resultados */
+      .quiz-results {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      .score {
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      .performance-feedback {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      
+      .answers-review {
+        margin-bottom: 20px;
+      }
+      
+      .answer-item {
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      .correct {
+        color: #27ae60;
+      }
+      
+      .incorrect {
+        color: #e74c3c;
+      }
+      
+      .correct-answer {
+        color: #27ae60;
+        font-weight: bold;
+      }
+      
+      .restart-button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.2s ease;
+      }
+      
+      .restart-button:hover {
+        background-color: #2980b9;
+      }
+    </style>
   </head>
 
   <body class="antialiased text-default bg-page tracking-tight">

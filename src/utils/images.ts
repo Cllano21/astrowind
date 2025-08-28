@@ -2,6 +2,8 @@ import { isUnpicCompatible, unpicOptimizer, astroAssetsOptimizer } from './image
 import type { ImageMetadata } from 'astro';
 import type { OpenGraph } from '@astrolib/seo';
 import type { ImagesOptimizer } from './images-optimization';
+import { SITE } from 'astrowind:config';
+
 /** The optimized image shape returned by our ImagesOptimizer */
 type OptimizedImage = Awaited<ReturnType<ImagesOptimizer>>[0];
 
@@ -54,7 +56,7 @@ export const findImage = async (
 /** */
 export const adaptOpenGraphImages = async (
   openGraph: OpenGraph = {},
-  astroSite: URL | undefined = new URL('')
+  astroSite: URL | undefined = undefined
 ): Promise<OpenGraph> => {
   if (!openGraph?.images?.length) {
     return openGraph;
@@ -63,6 +65,27 @@ export const adaptOpenGraphImages = async (
   const images = openGraph.images;
   const defaultWidth = 1200;
   const defaultHeight = 626;
+
+  // Obtener la URL base del sitio de forma segura
+  const getBaseUrl = () => {
+    try {
+      // Intentar usar astroSite si está disponible y es válido
+      if (astroSite && astroSite.href && astroSite.href !== '') {
+        return astroSite;
+      }
+      // Fallback a la configuración de SITE
+      if (SITE?.site) {
+        return new URL(SITE.site);
+      }
+      // Fallback final
+      return new URL('https://example.com');
+    } catch (error) {
+      console.error('Error creating base URL:', error);
+      return new URL('https://example.com');
+    }
+  };
+
+  const baseUrl = getBaseUrl();
 
   const adaptedImages = await Promise.all(
     images.map(async (image) => {
@@ -90,9 +113,26 @@ export const adaptOpenGraphImages = async (
           _image = (await astroAssetsOptimizer(resolvedImage, [dimensions[0]], dimensions[0], dimensions[1], 'jpg'))[0];
         }
 
-        if (typeof _image === 'object') {
+        if (typeof _image === 'object' && _image) {
+          // Crear la URL de forma segura
+          let imageUrl = '';
+          if ('src' in _image && typeof _image.src === 'string') {
+            try {
+              // Si ya es una URL absoluta, usarla directamente
+              if (_image.src.startsWith('http://') || _image.src.startsWith('https://')) {
+                imageUrl = _image.src;
+              } else {
+                // Si es una ruta relativa, crear una URL absoluta usando baseUrl
+                imageUrl = new URL(_image.src, baseUrl).href;
+              }
+            } catch (error) {
+              console.error('Error creating image URL:', error);
+              imageUrl = _image.src; // Usar la cadena original como fallback
+            }
+          }
+
           return {
-            url: 'src' in _image && typeof _image.src === 'string' ? String(new URL(_image.src, astroSite)) : '',
+            url: imageUrl,
             width: 'width' in _image && typeof _image.width === 'number' ? _image.width : undefined,
             height: 'height' in _image && typeof _image.height === 'number' ? _image.height : undefined,
           };
